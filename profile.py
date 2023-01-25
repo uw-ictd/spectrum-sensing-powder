@@ -9,6 +9,8 @@ import geni.rspec.emulab.route as route
 
 import os
 
+# Create the PC object
+pc = portal.Context()
 
 
 OSIMAGE = 'urn:publicid:IDN+emulab.net+image+PowderTeam:cots-focal-image'
@@ -80,8 +82,7 @@ def gnb_cn_pair(idx, b210_node):
     node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
 
 
-# CReate the PC object
-pc = portal.Context()
+
 
 
 node_types = [
@@ -179,13 +180,13 @@ portal.context.defineStructParameter(
 params = pc.bindParameters()
 pc.verifyParameters()
 
+request = pc.makeRequestRSpec()
+
 
 NUM_CNS = len(params.dense_radios)
 
 for idx, dense_radio in enumerate(params.dense_radios):
         gnb_cn_pair(idx, dense_radio)
-
-request = pc.makeRequestRSpec()
 
 for frange in params.freq_ranges:
     request.requestSpectrum(frange.freq_min, frange.freq_max, 0)
