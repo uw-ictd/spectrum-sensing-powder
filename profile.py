@@ -7,6 +7,8 @@ import geni.rspec.emulab as emulab
 # Route specific extensions.
 import geni.rspec.emulab.route as route
 
+import os
+
 
 
 OSIMAGE = 'urn:publicid:IDN+emulab.net+image+PowderTeam:cots-focal-image'
