@@ -40,7 +40,8 @@ def gnb_cn_pair(idx, b210_node):
     cn_node.hardware_type = params.cn_nodetype
     cn_node.disk_image = UBUNTU_IMG
     cn_if = cn_node.addInterface("cn-if-{}".format(idx))
-    cn_if.addAddress(rspec.IPv4Address(f"192.168.1.{idx + 1}", "255.255.255.0"))
+    idx  = idx + 1
+    cn_if.addAddress(rspec.IPv4Address("192.168.1.{}".format(idx), "255.255.255.0"))
     cn_link = request.Link("cn-link-{}".format(idx))
     cn_link.bandwidth = 1*1000*1000
     cn_link.addInterface(cn_if)
@@ -63,7 +64,8 @@ def gnb_cn_pair(idx, b210_node):
         node.disk_image = LOWLAT_IMG
 
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
-    nodeb_cn_if.addAddress(rspec.IPv4Address(f"192.168.1.{idx + 1 + NUM_CNS}", "255.255.255.0"))
+    gnb_idx = idx + 1 + NUM_CNS
+    nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.{}".format(gnb_idx), "255.255.255.0"))
     cn_link.addInterface(nodeb_cn_if)
 
     if params.oai_ran_commit_hash:
