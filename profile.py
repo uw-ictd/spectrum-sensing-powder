@@ -68,7 +68,7 @@ def gnb_cn_pair(idx, b210_node):
 
     if params.sdr_compute_image:
         node.disk_image = params.sdr_compute_image
-    else
+    else:
         node.disk_image = LOWLAT_IMG
 
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
