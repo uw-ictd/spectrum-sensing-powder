@@ -19,10 +19,10 @@ OSIMAGE = 'urn:publicid:IDN+emulab.net+image+PowderTeam:cots-focal-image'
 # Install script from the repository. This installs the uhd tools,
 # gnuradio, and starts up uhd_fft (displayed in the X11 VNC console).
 #
-INSTALL = 'sudo /bin/bash /local/repository/install.sh'
-
+INSTALL = 'sudo /bin/bash /local/repository/install.sh'  #COTS UE
 
 BIN_PATH = "/local/repository/bin"
+CONFIG_PATH = "/local/repository/bin/config/"
 ETC_PATH = "/local/repository/etc"
 LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderTeam:U18LL-SRSLTE"
 UBUNTU_IMG = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD"
@@ -32,8 +32,9 @@ COMP_MANAGER_ID = "urn:publicid:IDN+emulab.net+authority+cm"
 #TODO: check if merged to develop
 DEFAULT_NR_RAN_HASH = "565b8482f926bea13b5b72e4a6651032fdac7083"
 DEFAULT_NR_CN_HASH = "v1.4.0"
-OAI_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-oai.sh")
-OPEN5GS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-open5gs.sh")
+OAI_DEPLOY_SCRIPT = lambda x:os.path.join(x, "deploy-oai.sh")          # gNB
+OPEN5GS_DEPLOY_SCRIPT = lambda x: os.path.join(x, "deploy-open5gs.sh")  # EPC
+OPEN5GS_CONFIG_PATH="/etc/open5gs"
 
 NUM_CNS = None
 
@@ -50,13 +51,16 @@ def gnb_cn_pair(idx, b210_node):
     cn_link.bandwidth = 1*1000*1000
     cn_link.addInterface(cn_if)
 
-    if params.oai_cn_commit_hash:
-        oai_cn_hash = params.oai_cn_commit_hash
+    if params.ash:
+        n_hash = params.oai_cn_commit_hash
     else:
         oai_cn_hash = DEFAULT_NR_CN_HASH
 
-    # cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT, oai_cn_hash, role)
-    cn_node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
+    cmd = "cp {}/core/{}/* {}".format(CONFIG_PATH, idx, OPEN5GS_CONFIG_PATH)    
+    cn_node.addService(pg.Execute(shell="bash", command=cmd)
+    cn_node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT(BIN_PATH)))
+    #*********************************************
+    # Execute core network configuration here
 
     node = request.RawPC("gnb-{}".format(b210_node.device.split("-")[-1]))
     node.component_manager_id = COMP_MANAGER_ID
@@ -64,7 +68,7 @@ def gnb_cn_pair(idx, b210_node):
 
     if params.sdr_compute_image:
         node.disk_image = params.sdr_compute_image
-    else:
+    else
         node.disk_image = LOWLAT_IMG
 
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
@@ -77,7 +81,11 @@ def gnb_cn_pair(idx, b210_node):
     else:
         oai_ran_hash = DEFAULT_NR_RAN_HASH
 
-    cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT, oai_ran_hash, "nodeb")
+    #ENB_CONFIG_PATH="/srsran/enb.conf"
+    #RRC_CONFIG_PATH="/srsran/rr.conf"
+    # Execute eNode deploy script
+    #cmd = "cp {}/enb/{}/* {}".format(CONFIG_PATH, idx, ENB_CONFIG_PATH)
+    cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT(BIN_PATH), oai_ran_hash, "nodeb")
     node.addService(pg.Execute(shell="bash", command=cmd))
     node.addService(pg.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
 
@@ -203,6 +211,11 @@ request.initVNC()
 #
 allroutes = request.requestAllRoutes()
 allroutes.disk_image = OSIMAGE
+
+#cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT, oai_ran_hash, "nodeb")
+#allroutes.addService(pg.Execute(shell="bash", command=INSTALL))
+#allroute.addService(pg.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
+
 allroutes.addService(pg.Execute(shell="sh", command=INSTALL))
 allroutes.startVNC()
 
