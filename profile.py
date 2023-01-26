@@ -57,7 +57,7 @@ def gnb_cn_pair(idx, b210_node):
         oai_cn_hash = DEFAULT_NR_CN_HASH
 
     cmd = "cp {}/core/{}/* {}".format(CONFIG_PATH, idx, OPEN5GS_CONFIG_PATH)    
-    cn_node.addService(pg.Execute(shell="bash", command=cmd)
+    cn_node.addService(pg.Execute(shell="bash", command=cmd))
     cn_node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT(BIN_PATH)))
     #*********************************************
     # Execute core network configuration here
