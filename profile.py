@@ -2,7 +2,6 @@
 import geni.portal as portal
 # Import the ProtoGENI library.
 import geni.rspec.pg as pg
-import geni.rspec.igext as IG
 # Emulab specific extensions.
 import geni.rspec.emulab as emulab
 # Route specific extensions.
@@ -192,11 +191,6 @@ for idx, dense_radio in enumerate(params.dense_radios):
 for frange in params.freq_ranges:
     request.requestSpectrum(frange.freq_min, frange.freq_max, 0)
 
-tour = IG.Tour()
-tour.Description(IG.Tour.MARKDOWN, tourDescription)
-tour.Instructions(IG.Tour.MARKDOWN, tourInstructions)
-
-request.addTour(tour)
 #
 # Declare that you will be starting X11 VNC on (some of) your nodes.
 # You must have this line for X11 VNC to work.
