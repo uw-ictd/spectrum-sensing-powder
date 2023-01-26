@@ -2,6 +2,7 @@
 import geni.portal as portal
 # Import the ProtoGENI library.
 import geni.rspec.pg as pg
+import geni.rspec.igext as IG
 # Emulab specific extensions.
 import geni.rspec.emulab as emulab
 # Route specific extensions.
@@ -45,7 +46,7 @@ def gnb_cn_pair(idx, b210_node):
     cn_node.disk_image = UBUNTU_IMG
     cn_if = cn_node.addInterface("cn-if-{}".format(idx))
     idx  = idx + 1
-    cn_if.addAddress(rspec.IPv4Address("192.168.1.{}".format(idx), "255.255.255.0"))
+    cn_if.addAddress(pg.IPv4Address("192.168.1.{}".format(idx), "255.255.255.0"))
     cn_link = request.Link("cn-link-{}".format(idx))
     cn_link.bandwidth = 1*1000*1000
     cn_link.addInterface(cn_if)
@@ -56,7 +57,7 @@ def gnb_cn_pair(idx, b210_node):
         oai_cn_hash = DEFAULT_NR_CN_HASH
 
     # cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT, oai_cn_hash, role)
-    cn_node.addService(rspec.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
+    cn_node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
 
     node = request.RawPC("gnb-{}".format(b210_node.device.split("-")[-1]))
     node.component_manager_id = COMP_MANAGER_ID
@@ -69,7 +70,7 @@ def gnb_cn_pair(idx, b210_node):
 
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
     gnb_idx = idx + 1 + NUM_CNS
-    nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.{}".format(gnb_idx), "255.255.255.0"))
+    nodeb_cn_if.addAddress(pg.IPv4Address("192.168.1.{}".format(gnb_idx), "255.255.255.0"))
     cn_link.addInterface(nodeb_cn_if)
 
     if params.oai_ran_commit_hash:
@@ -78,8 +79,8 @@ def gnb_cn_pair(idx, b210_node):
         oai_ran_hash = DEFAULT_NR_RAN_HASH
 
     cmd = "{} '{}' {}".format(OAI_DEPLOY_SCRIPT, oai_ran_hash, "nodeb")
-    node.addService(rspec.Execute(shell="bash", command=cmd))
-    node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
+    node.addService(pg.Execute(shell="bash", command=cmd))
+    node.addService(pg.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
 
 
 
