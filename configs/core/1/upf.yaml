@@ -164,24 +164,17 @@ logger:
 #        dnn: ims
 #        dev: ogstun3
 #
-#  <Metrics Server>
-#
-#  o Metrics Server(http://<any address>:9090)
-#    metrics:
-#    - addr: 0.0.0.0
-#      port: 9090
-#
 upf:
     pfcp:
       - addr: 127.0.0.7
     gtpu:
-      - addr: 127.0.0.7
+      - addr: 192.168.1.1
     subnet:
       - addr: 10.45.0.1/16
-      - addr: 2001:db8:cafe::1/48
-    metrics:
-      - addr: 127.0.0.7
-        port: 9090
+        dnn: internet
+      - addr: 10.46.0.1/16
+        dnn: ims
+      - addr: 10.50.0.1/16 ## FALLBACK SUBNET
 
 #
 # smf:
@@ -215,10 +208,10 @@ parameter:
 #
 # max:
 #
-# o Maximum Number of UE
+# o Maximum Number of UE per AMF/MME
 #    ue: 1024
-# o Maximum Number of Peer(S1AP/NGAP, DIAMETER, GTP, PFCP or SBI)
-#    peer: 64
+# o Maximum Number of gNB/eNB per AMF/MME
+#    gnb: 64
 #
 max:
 

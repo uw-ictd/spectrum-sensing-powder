@@ -20,45 +20,6 @@
 #
 logger:
     file: /var/log/open5gs/amf.log
-
-#
-# tls:
-#    enabled: auto|yes|no
-#    - auto: Default. Use TLS only if key/cert is available
-#    - yes:  Use TLS always;
-#            reject if no key/cert available
-#    - no:   Don't use TLS if there is an key/cert available
-#
-#    o Server-side Key and Certficiate
-#    server:
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#
-#    o Client-side does not use TLS
-#    client:
-#      enabled: no
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#
-#    o Use the specified certificate to verify client
-#    server
-#      cacert: /etc/open5gs/tls/ca.crt
-#
-#    o Use the specified certificate to verify server
-#    client
-#      cacert: /etc/open5gs/tls/ca.crt
-#
-tls:
-    enabled: no
-    server:
-      cacert: /etc/open5gs/tls/ca.crt
-      key: /etc/open5gs/tls/amf.key
-      cert: /etc/open5gs/tls/amf.crt
-    client:
-      cacert: /etc/open5gs/tls/ca.crt
-      key: /etc/open5gs/tls/amf.key
-      cert: /etc/open5gs/tls/amf.crt
-
 #
 # amf:
 #
@@ -67,39 +28,28 @@ tls:
 #  o SBI Server(http://<all address available>:80)
 #    sbi:
 #
-#  o SBI Server(http://<any address>:7777)
+#  o SBI Server(http://<any address>:80)
 #    sbi:
 #      - addr:
 #          - 0.0.0.0
 #          - ::0
 #        port: 7777
 #
-#  o SBI Server(https://<all address available>:443)
-#  tls:
-#    server:
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#  amf:
+#  o SBI Server(https://<all address avaiable>:443)
 #    sbi:
+#      - tls:
+#          key: amf.key
+#          pem: amf.pem
 #
-#  o SBI Server(http://127.0.0.5:80, http://[::1]:80)
-#  tls:
-#    enabled: no
-#    server:
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#  amf:
+#  o SBI Server(https://127.0.0.5:443, http://[::1]:80)
 #    sbi:
 #      - addr: 127.0.0.5
+#        tls:
+#          key: amf.key
+#          pem: amf.pem
 #      - addr: ::1
 #
-#  o SBI Server(https://amf.open5gs.org:443)
-#    Use the specified certificate to verify client
-#
-#  tls:
-#    server:
-#      cacert: /etc/open5gs/tls/ca.crt
-#  amf:
+#  o SBI Server(http://amf.open5gs.org:80)
 #    sbi:
 #      - name: amf.open5gs.org
 #
@@ -135,65 +85,9 @@ tls:
 #          l_onoff: true
 #          l_linger: 10
 #
-#  <NF Service>
-#
-#  o NF Service Name(Default : all NF services available)
-#    service_name:
-#
-#  o NF Service Name(Only some NF services are available)
-#    service_name:
-#      - namf-comm
-#
-#  <NF Discovery Query Parameter>
-#
-#  o (Default) If you do not set Query Parameter as shown below,
-#
-#    sbi:
-#      - addr: 127.0.0.5
-#        port: 7777
-#
-#    - 'service-names' is included.
-#
-#    sbi:
-#      - addr: 127.0.0.5
-#        port: 7777
-#    discovery:
-#      option:
-#        no_service_names: false
-#
-#  o To remove 'service-names' from URI query parameters in NS Discovery
-#         no_service_names: true
-#
-#    * For Indirect Communication with Delegated Discovery,
-#      'service-names' is always included in the URI query parameter.
-#    * That is, 'no_service_names' has no effect.
-#
-#  <For Indirect Communication with Delegated Discovery>
-#
-#  o (Default) If you do not set Delegated Discovery as shown below,
-#
-#    sbi:
-#      - addr: 127.0.0.5
-#        port: 7777
-#
-#    - Use SCP if SCP avaiable. Otherwise NRF is used.
-#      => App fails if both NRF and SCP are unavailable.
-#
-#    sbi:
-#      - addr: 127.0.0.5
-#        port: 7777
-#    discovery:
-#      delegated: auto
-#
-#  o To use SCP always => App fails if no SCP available.
-#      delegated: yes
-#
-#  o Don't use SCP server => App fails if no NRF available.
-#      delegated: no
-#
 #  <NGAP Server>>
 #
-#  o NGAP Server(all address available)
+#  o NGAP Server(all address avaiable)
 #    ngap:
 #
 #  o NGAP Server(0.0.0.0:38412)
@@ -210,7 +104,7 @@ tls:
 #      - addr: 127.0.0.5
 #        port: 38413
 #
-#  o NGAP Server(address available in `eth0` interface)
+#  o NGAP Server(address avaiable in `eth0` interface)
 #    ngap:
 #      dev: eth0
 #
@@ -251,19 +145,12 @@ tls:
 #          sinit_max_attempts : 4
 #          sinit_max_init_timeo : 8000
 #
-#  <Metrics Server>
-#
-#  o Metrics Server(http://<any address>:9090)
-#    metrics:
-#      - addr: 0.0.0.0
-#        port: 9090
-#
 #  <GUAMI>
 #
 #  o Multiple GUAMI
 #    guami:
 #      - plmn_id:
-#          mcc: 999
+#          mcc: 901
 #          mnc: 70
 #        amf_id:
 #          region: 2
@@ -312,13 +199,13 @@ tls:
 #  o Multiple PLMN Support
 #    plmn_support:
 #      - plmn_id:
-#          mcc: 999
+#          mcc: 901
 #          mnc: 70
 #        s_nssai:
 #          - sst: 1
 #            sd: 010000
 #      - plmn_id:
-#          mcc: 999
+#          mcc: 901
 #          mnc: 70
 #        s_nssai:
 #          - sst: 1
@@ -331,7 +218,7 @@ tls:
 #
 #  <AMF Name>
 #
-#    amf_name: amf1.open5gs.amf.5gc.mnc70.mcc999.3gppnetwork.org
+#    amf_name: amf1.open5gs.amf.5gc.mnc70.mcc901.3gppnetwork.org
 #
 #  <Relative Capacity> - Default(255)
 #
@@ -342,10 +229,7 @@ amf:
       - addr: 127.0.0.5
         port: 7777
     ngap:
-      - addr: 127.0.0.5
-    metrics:
-      - addr: 127.0.0.5
-        port: 9090
+      - addr: 192.168.1.1
     guami:
       - plmn_id:
           mcc: 999
@@ -364,68 +248,13 @@ amf:
           mnc: 99
         s_nssai:
           - sst: 1
+            sd: 0x000001
     security:
         integrity_order : [ NIA2, NIA1, NIA0 ]
         ciphering_order : [ NEA0, NEA1, NEA2 ]
     network_name:
         full: Open5GS
     amf_name: open5gs-amf0
-
-#
-# scp:
-#
-#  <SBI Client>>
-#
-#  o SBI Client(http://127.0.1.10:7777)
-#    sbi:
-#      addr: 127.0.1.10
-#      port: 7777
-#
-#  o SBI Client(https://127.0.1.10:443, https://[::1]:443)
-#  tls:
-#    client:
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#  scp:
-#    sbi:
-#      - addr: 127.0.1.10
-#      - addr: ::1
-#
-#  o SBI Client(https://scp.open5gs.org:443)
-#    Use the specified certificate to verify server
-#
-#  tls:
-#    client:
-#      cacert: /etc/open5gs/tls/ca.crt
-#  scp:
-#    sbi:
-#      - name: scp.open5gs.org
-#
-#  o SBI Client(http://[fd69:f21d:873c:fb::1]:80)
-#    If prefer_ipv4 is true, http://127.0.1.10:80 is selected.
-#
-#    sbi:
-#      addr:
-#        - 127.0.1.10
-#        - fd69:f21d:873c:fb::1
-#
-#  o SBI Option (Default)
-#    - tcp_nodelay : true
-#    - so_linger.l_onoff : false
-#
-#    sbi:
-#      addr: 127.0.1.10
-#      option:
-#        tcp_nodelay: false
-#        so_linger:
-#          l_onoff: true
-#          l_linger: 10
-#
-#
-scp:
-    sbi:
-      - addr: 127.0.1.10
-        port: 7777
 
 #
 # nrf:
@@ -437,24 +266,12 @@ scp:
 #      addr: 127.0.0.10
 #      port: 7777
 #
-#  o SBI Client(https://127.0.0.10:443, https://[::1]:443)
-#  tls:
-#    client:
-#      key: /etc/open5gs/tls/amf.key
-#      cert: /etc/open5gs/tls/amf.crt
-#  nrf:
+#  o SBI Client(https://127.0.0.10:443, http://nrf.open5gs.org:80)
 #    sbi:
 #      - addr: 127.0.0.10
-#      - addr: ::1
-#
-#  o SBI Client(https://nrf.open5gs.org:443)
-#    Use the specified certificate to verify server
-#
-#  tls:
-#    client:
-#      cacert: /etc/open5gs/tls/ca.crt
-#  nrf:
-#    sbi:
+#        tls:
+#          key: nrf.key
+#          pem: nrf.pem
 #      - name: nrf.open5gs.org
 #
 #  o SBI Client(http://[fd69:f21d:873c:fa::1]:80)
@@ -477,12 +294,12 @@ scp:
 #          l_onoff: true
 #          l_linger: 10
 #
-#nrf:
-#    sbi:
-#      - addr:
-#          - 127.0.0.10
-#          - ::1
-#        port: 7777
+nrf:
+    sbi:
+      - addr:
+          - 127.0.0.10
+          - ::1
+        port: 7777
 
 #
 # parameter:
@@ -501,10 +318,10 @@ parameter:
 #
 # max:
 #
-# o Maximum Number of UE
+# o Maximum Number of UE per AMF/MME
 #    ue: 1024
-# o Maximum Number of Peer(S1AP/NGAP, DIAMETER, GTP, PFCP or SBI)
-#    peer: 64
+# o Maximum Number of gNB/eNB per AMF/MME
+#    gnb: 64
 #
 max:
 
@@ -541,13 +358,18 @@ usrsctp:
 #  o Handover Wait Duration (500ms)
 #    handover:
 #        duration: 500
-#
-#  o Timers of 5GS mobility/session management
-#    t3502:
-#      value: 720  # 12 minutes * 60 = 720 seconds
-#    t3512:
-#      value: 3240 # 54 minutes * 60 = 3240 seconds
-#
 time:
-  t3512:
-    value: 540     # 9 mintues * 60 = 540 seconds
+
+#
+# metrics:
+#
+#  <Metrics Server>
+#
+#  o Metrics Server(http://<any address>:9090)
+#    metrics:
+#      addr: 0.0.0.0
+#      port: 9090
+#
+metrics:
+    addr: 0.0.0.0
+    port: 9090
