@@ -51,13 +51,13 @@ def gnb_cn_pair(idx, b210_node):
     cn_link.bandwidth = 1*1000*1000
     cn_link.addInterface(cn_if)
 
-    if params.ash:
+    if params.oai_cn_commit_hash:
         n_hash = params.oai_cn_commit_hash
     else:
         oai_cn_hash = DEFAULT_NR_CN_HASH
 
     cmd = "cp {}/core/{}/* {}".format(CONFIG_PATH, idx, OPEN5GS_CONFIG_PATH)    
-    cn_node.addService(pg.Execute(shell="bash", command=cmd)
+    cn_node.addService(pg.Execute(shell="bash", command=cmd))
     cn_node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT(BIN_PATH)))
     #*********************************************
     # Execute core network configuration here
@@ -68,7 +68,7 @@ def gnb_cn_pair(idx, b210_node):
 
     if params.sdr_compute_image:
         node.disk_image = params.sdr_compute_image
-    else
+    else:
         node.disk_image = LOWLAT_IMG
 
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
