@@ -22,7 +22,7 @@ OSIMAGE = 'urn:publicid:IDN+emulab.net+image+PowderTeam:cots-focal-image'
 INSTALL = 'sudo /bin/bash /local/repository/install.sh'  #COTS UE
 
 BIN_PATH = "/local/repository/bin"
-CONFIG_PATH = "/local/repository/bin/configs"
+CONFIG_PATH = "/local/repository/configs"
 ETC_PATH = "/local/repository/etc"
 LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderTeam:U18LL-SRSLTE"
 UBUNTU_IMG = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD"
