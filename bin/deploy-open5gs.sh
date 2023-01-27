@@ -21,7 +21,7 @@ sudo apt install -y iperf3 open5gs tshark wireshark
 
 # Add open5gs configs there
 
-sudo cp /local/repository/etc/open5gs/* /etc/open5gs/
+sudo cp /local/repository/configs/core/1/* /etc/open5gs/
 
 sudo systemctl restart open5gs-mmed
 sudo systemctl restart open5gs-sgwcd
