@@ -19,7 +19,7 @@
 #    domain: core,pfcp,gtp,upf,event,tlv,mem,sock
 #
 logger:
-    file: @localstatedir@/log/open5gs/upf.log
+    file: /var/log/open5gs/upf.log
 
 #
 # upf:
